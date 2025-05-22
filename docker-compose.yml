@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  php:
+    image: yiisoftware/yii2-php:8.4-fpm-nginx
+    container_name: yii2_app
+    ports:
+      - "8080:80"
+    volumes:
+      - ./app:/app
+    depends_on:
+      - mysql
+    networks:
+      - yii_network
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_yii
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: yii2app
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - yii_network
+
+volumes:
+  db_data:
+networks:
+  yii_network:
+    driver: bridge
