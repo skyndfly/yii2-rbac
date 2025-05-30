@@ -14,6 +14,15 @@ $config = [
         '@tests' => '@app/tests',
     ],
     'components' => [
+        'user' => [
+            'class' => yii\web\User::class,
+            'identityClass' => app\models\User::class,
+            'enableAutoLogin' => false,
+            'enableSession' => false,
+        ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
