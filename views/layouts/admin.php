@@ -1,7 +1,6 @@
 <?php
 
 /** @var yii\web\View $this */
-
 /** @var string $content */
 
 use app\assets\AppAsset;
@@ -41,17 +40,12 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'options' => ['class' => 'navbar-nav'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
-            Yii::$app->user->can('canAdmin')
-                ? ['label' => 'Панель администратора', 'url' => ['/lk']]
-                : '',
             Yii::$app->user->isGuest
                 ? ['label' => 'Login', 'url' => ['/site/login']]
                 : '<li class="nav-item">'
                 . Html::beginForm(['/site/logout'])
                 . Html::submitButton(
-                    'Выйти [' . Yii::$app->user->identity->getUserName() . ']',
+                    'Logout (' . Yii::$app->user->identity->getUserName() . ')',
                     ['class' => 'nav-link btn btn-link logout']
                 )
                 . Html::endForm()
@@ -67,8 +61,17 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         <?php if (!empty($this->params['breadcrumbs'])): ?>
             <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>
         <?php endif ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
+       <div class="row">
+           <div class="col-4">
+               <menu class="p-0">
+                   <a class="py-2 px-2" href="lk/users">Список пользователей</a>
+               </menu>
+           </div>
+           <div class="col-8">
+               <?= Alert::widget() ?>
+               <?= $content ?>
+           </div>
+       </div>
     </div>
 </main>
 

@@ -2,15 +2,12 @@
 
 namespace app\models;
 
+use app\auth\UserIdentity;
+use app\repositories\UserRepository;
 use Yii;
 use yii\base\Model;
 
-/**
- * LoginForm is the model behind the login form.
- *
- * @property-read User|null $user
- *
- */
+
 class LoginForm extends Model
 {
     public $username;
@@ -20,9 +17,7 @@ class LoginForm extends Model
     private $_user = false;
 
 
-    /**
-     * @return array the validation rules.
-     */
+
     public function rules()
     {
         return [
@@ -65,17 +60,14 @@ class LoginForm extends Model
         return false;
     }
 
-    /**
-     * Finds user by [[username]]
-     *
-     * @return User|null
-     */
     public function getUser()
     {
         if ($this->_user === false) {
-            $this->_user = User::findByUsername($this->username);
+            $repo = new UserRepository();
+            $this->_user =$repo->findByUserName($this->username);
+
         }
 
-        return $this->_user;
+        return new UserIdentity($this->_user);
     }
 }
