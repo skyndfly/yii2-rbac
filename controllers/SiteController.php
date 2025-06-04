@@ -2,19 +2,32 @@
 
 namespace app\controllers;
 
+use app\dto\RegisterUserDto;
+use app\services\user\contracts\UserRegisterServiceContract;
+use app\widgets\form\RegisterForm;
+use DomainException;
+use Exception;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
-use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 
 class SiteController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
+    private UserRegisterServiceContract $userStoreService;
+
+    public function __construct(
+        $id,
+        $module,
+        UserRegisterServiceContract $userStoreService,
+        $config = []
+    ) {
+        parent::__construct($id, $module, $config);
+        $this->userStoreService = $userStoreService;
+    }
+
     public function behaviors()
     {
         return [
@@ -25,7 +38,7 @@ class SiteController extends Controller
                     [
                         'actions' => ['logout'],
                         'allow' => true,
-                        'roles' => ['canAdmin'],
+                        'roles' => ['@'],
                     ],
                 ],
             ],
@@ -64,19 +77,40 @@ class SiteController extends Controller
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-
-
         $model = new LoginForm();
-
-
+        //TODO вынести авторизацию в отдельный сервис
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         }
-
+        //TODO разобраться зачем это. Сброс пароля чтобы в вьюхе нельзя было его вывести?
         $model->password = '';
         return $this->render('login', [
             'model' => $model,
         ]);
+    }
+
+    public function actionRegister()
+    {
+        $formModel = new RegisterForm();
+        return $this->render('register', [
+            'formModel' => $formModel,
+        ]);
+    }
+
+    public function actionSignup()
+    {
+        try {
+            $form = new RegisterForm();
+            if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+                $dto = new RegisterUserDto($form->username, $form->password);
+                $this->userStoreService->execute($dto);
+                return $this->goHome();
+            }
+            throw new DomainException('Произошла непредвиденная ошибка');
+        } catch (DomainException|Exception $exception) {
+            Yii::$app->session->setFlash('error', $exception->getMessage());
+            return $this->redirect('/site/register');
+        }
     }
 
     public function actionLogout()

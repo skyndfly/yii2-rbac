@@ -3,7 +3,7 @@
 namespace app\controllers\admin;
 
 
-use app\services\contracts\PaginateUsersServiceContract;
+use app\services\user\contracts\PaginateUsersServiceContract;
 
 class UsersController extends BaseController
 {

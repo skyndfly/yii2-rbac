@@ -4,6 +4,7 @@ namespace app\repositories;
 
 use app\dto\RegisterUserDto;
 use app\dto\UserDto;
+use app\enums\UserStatusEnum;
 use Yii;
 
 class UserRepository extends BaseRepository
@@ -14,6 +15,7 @@ class UserRepository extends BaseRepository
     {
         $row = $this->getQuery()
             ->where(['id' => $id])
+            ->andWhere(['status' => UserStatusEnum::ACTIVE])
             ->from(self::TABLE)
             ->one();
         return $row ? $this->mapToDto($row) : null;
@@ -24,6 +26,7 @@ class UserRepository extends BaseRepository
     {
         $row = $this->getQuery()
             ->where(['username' => $username])
+            ->andWhere(['status' => UserStatusEnum::ACTIVE])
             ->from(self::TABLE)
             ->one();
         return $row ? $this->mapToDto($row) : null;
@@ -42,6 +45,7 @@ class UserRepository extends BaseRepository
                 'password_hash' => $passwordHash,
                 'auth_key' => $authKey,
                 'access_token' => $accessToken,
+                'status' => UserStatusEnum::ACTIVE,
             ])
             ->execute();
 

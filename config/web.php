@@ -57,13 +57,16 @@ $config = [
                 'GET posts' => 'post/index',
                 'GET lk' => 'admin/admin-page/index',
                 'GET lk/users' => 'admin/users/index',
+                'GET site/register' => 'site/register',
+                'POST site/signup' => 'site/signup',
             ],
         ],
     ],
     'params' => $params,
     'container' => [
         'definitions' => [
-            \app\services\contracts\PaginateUsersServiceContract::class => \app\services\PaginateUsersService::class,
+            \app\services\user\contracts\PaginateUsersServiceContract::class => \app\services\user\PaginateUsersService::class,
+            \app\services\user\contracts\UserRegisterServiceContract::class => \app\services\user\UserRegisterService::class,
         ]
     ]
 ];

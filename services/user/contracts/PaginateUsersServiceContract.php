@@ -1,6 +1,7 @@
 <?php
 
-namespace app\services\contracts;
+namespace app\services\user\contracts;
+
 
 interface PaginateUsersServiceContract
 {

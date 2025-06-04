@@ -30,7 +30,6 @@ class TestController extends Controller
             username: $username,
             password: $password
         );
-
         $user = $this->userRepository->save($dto);
 
         return ExitCode::OK;
