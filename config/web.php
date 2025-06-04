@@ -59,6 +59,7 @@ $config = [
                 'GET lk/users' => 'admin/users/index',
                 'GET site/register' => 'site/register',
                 'POST site/signup' => 'site/signup',
+                'POST site/authorize' => 'site/authorize',
             ],
         ],
     ],
@@ -67,6 +68,7 @@ $config = [
         'definitions' => [
             \app\services\user\contracts\PaginateUsersServiceContract::class => \app\services\user\PaginateUsersService::class,
             \app\services\user\contracts\UserRegisterServiceContract::class => \app\services\user\UserRegisterService::class,
+            \app\services\user\contracts\UserAuthorizeServiceContract::class => \app\services\user\UserAuthorizeService::class,
         ]
     ]
 ];

@@ -21,6 +21,6 @@ class UserRegisterService implements UserRegisterServiceContract
     {
         $user = $this->userRepository->save($dto);
         $user = new UserIdentity($user);
-        Yii::$app->user->login($user, 3600 * 24 * 30);
+        Yii::$app->user->login($user, 0);
     }
 }

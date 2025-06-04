@@ -3,7 +3,7 @@
 /** @var yii\web\View $this */
 /** @var yii\bootstrap5\ActiveForm $form */
 
-/** @var app\models\LoginForm $model */
+/** @var \app\widgets\form\LoginForm $model */
 
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
@@ -19,6 +19,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?php $form = ActiveForm::begin([
                 'id' => 'login-form',
+                'method' => 'post',
+                'action' => ['site/authorize'],
                 'fieldConfig' => [
                     'template' => "{label}\n{input}\n{error}",
                     'labelOptions' => ['class' => 'col-lg-1 col-form-label mr-lg-3'],
@@ -37,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <div class="form-group">
                 <div>
-                    <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                    <?= Html::submitButton('Войти', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
                 </div>
             </div>
 

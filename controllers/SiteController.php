@@ -2,30 +2,35 @@
 
 namespace app\controllers;
 
+use app\dto\AuthorizeUserDto;
 use app\dto\RegisterUserDto;
+use app\models\ContactForm;
+use app\services\user\contracts\UserAuthorizeServiceContract;
 use app\services\user\contracts\UserRegisterServiceContract;
+use app\widgets\form\LoginForm;
 use app\widgets\form\RegisterForm;
 use DomainException;
 use Exception;
 use Yii;
 use yii\filters\AccessControl;
-use yii\web\Controller;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
+use yii\web\Controller;
 
 class SiteController extends Controller
 {
     private UserRegisterServiceContract $userStoreService;
+    private UserAuthorizeServiceContract $userAuthorizeService;
 
     public function __construct(
         $id,
         $module,
         UserRegisterServiceContract $userStoreService,
+        UserAuthorizeServiceContract $userAuthorizeService,
         $config = []
     ) {
         parent::__construct($id, $module, $config);
         $this->userStoreService = $userStoreService;
+        $this->userAuthorizeService = $userAuthorizeService;
     }
 
     public function behaviors()
@@ -78,15 +83,26 @@ class SiteController extends Controller
             return $this->goHome();
         }
         $model = new LoginForm();
-        //TODO вынести авторизацию в отдельный сервис
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        }
-        //TODO разобраться зачем это. Сброс пароля чтобы в вьюхе нельзя было его вывести?
-        $model->password = '';
         return $this->render('login', [
             'model' => $model,
         ]);
+    }
+
+    public function actionAuthorize()
+    {
+        try {
+            $form = new LoginForm();
+            if ($form->load(Yii::$app->request->post())) {
+                $dto = new AuthorizeUserDto($form->username, $form->password, $form->rememberMe);
+                if ($this->userAuthorizeService->execute($dto)) {
+                    return $this->goBack();
+                }
+            }
+            throw new DomainException('Произошла непредвиденная ошибка');
+        }catch (DomainException $e){
+            Yii::$app->session->setFlash('error', $e->getMessage());
+            return $this->redirect('/site/login');
+        }
     }
 
     public function actionRegister()
@@ -116,7 +132,6 @@ class SiteController extends Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
         return $this->goHome();
     }
 
