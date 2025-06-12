@@ -3,7 +3,12 @@
 namespace app\services\user\contracts;
 
 
+use app\dto\PaginateUserDto;
+
 interface PaginateUsersServiceContract
 {
-    public function execute();
+    /**
+     * @return PaginateUserDto[]
+     */
+    public function execute(): array;
 }

@@ -63,8 +63,9 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         <?php endif ?>
        <div class="row">
            <div class="col-4">
-               <menu class="p-0">
-                   <a class="py-2 px-2" href="lk/users">Список пользователей</a>
+               <menu class="p-0 d-flex flex-column">
+                   <a class="py-2 px-2" href="/lk/users">Список пользователей</a>
+                   <a class="py-2 px-2" href="/lk/rbac">Управление ролями и разрешениями</a>
                </menu>
            </div>
            <div class="col-8">

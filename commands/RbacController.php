@@ -16,18 +16,25 @@ class RbacController extends Controller
         $admin->description = 'Администратор';
         $auth->add($admin);
 
-        $contentManager = $auth->createRole('contentManager');
-        $contentManager->description = 'Контент Менеджер';
-        $auth->add($contentManager);
+        $permission = $auth->createPermission('canAdmin');
+        $permission->description = 'Право входа в админку';
+        $auth->add($permission);
 
-        $user = $auth->createRole('user');
-        $user->description = 'Пользователь';
-        $auth->add($user);
-        $auth->addChild($admin, $user);
+        $auth->addChild($admin, $permission);
+        $auth->assign($admin, 1);
 
-        $bannedUser = $auth->createRole('bannedUser');
-        $bannedUser->description = 'Забаненный';
-        $auth->add($bannedUser);
+//        $contentManager = $auth->createRole('contentManager');
+//        $contentManager->description = 'Контент Менеджер';
+//        $auth->add($contentManager);
+//
+//        $user = $auth->createRole('user');
+//        $user->description = 'Пользователь';
+//        $auth->add($user);
+//        $auth->addChild($admin, $user);
+//
+//        $bannedUser = $auth->createRole('bannedUser');
+//        $bannedUser->description = 'Забаненный';
+//        $auth->add($bannedUser);
 
         $this->stdout('Done!' . PHP_EOL);
     }
@@ -42,7 +49,7 @@ class RbacController extends Controller
         $this->stdout('Done!' . PHP_EOL);
     }
 
-    public function actionBindRoleToPermission()
+    public function actionBindPermissionToRole()
     {
         $auth = Yii::$app->getAuthManager();
 
@@ -53,6 +60,15 @@ class RbacController extends Controller
         $auth->addChild($admin, $permission);
         $auth->addChild($contentManager, $permission);
 
+        $this->stdout('Done!' . PHP_EOL);
+    }
+
+    public function actionCreateNewRole(string $roleName, string $description)
+    {
+        $auth = Yii::$app->getAuthManager();
+        $role = $auth->createRole($roleName);
+        $role->description = $description;
+        $auth->add($role);
         $this->stdout('Done!' . PHP_EOL);
     }
 

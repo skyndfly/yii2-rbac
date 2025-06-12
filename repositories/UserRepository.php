@@ -52,6 +52,21 @@ class UserRepository extends BaseRepository
         return $this->findById(Yii::$app->db->getLastInsertID());
     }
 
+    /**
+     * @return UserDto[]
+     */
+    public function getAllActiveUsers(): array
+    {
+        $rows = $this->getQuery()
+            ->from(self::TABLE)
+            ->where(['status' => UserStatusEnum::ACTIVE])
+            ->all();
+        $result = [];
+        foreach ($rows as $row) {
+            $result[] = $this->mapToDto($row);
+        }
+        return $result;
+    }
     private function mapToDto(array $user): UserDto
     {
         $dto = new UserDto();
@@ -64,4 +79,5 @@ class UserRepository extends BaseRepository
         $dto->createdAt = $user["created_at"];
         return $dto;
     }
+
 }

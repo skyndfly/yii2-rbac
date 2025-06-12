@@ -23,7 +23,9 @@ class UsersController extends BaseController
 
     public function actionIndex()
     {
-        $this->paginateUsersService->execute();
-        return $this->render('index');
+        $users = $this->paginateUsersService->execute();
+        return $this->render('index', [
+            'users' => $users,
+        ]);
     }
 }
