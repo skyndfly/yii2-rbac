@@ -1,6 +1,7 @@
 <?php
 
 use app\dto\AuthItemDto;
+use app\enums\RoleTypeEnum;
 use yii\data\ArrayDataProvider;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
@@ -10,6 +11,7 @@ use yii\grid\GridView;
 <section>
     <h1>Список ролей</h1>
     <a href="/lk/rbac/role/create" class="btn btn-outline-success mb-3">Создать роль</a>
+    <a href="/lk/rbac/permission/create" class="btn btn-outline-success mb-3">Создать разрешение</a>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'layout' => "{items}\n{summary}\n{pager}",
@@ -28,11 +30,11 @@ use yii\grid\GridView;
                 'label' => 'Тип роли',
                 'value' => function (AuthItemDto $item) {
                     return $item->type->label();
-                }
+                },
             ],
             [
-                    'class' => ActionColumn::class,
-                    'template' => '{view} {update} {delete}',
+                'class' => ActionColumn::class,
+                'template' => '{view} {update} {delete}',
             ]
         ]
     ]) ?>

@@ -17,7 +17,7 @@ class AuthItemRepository extends BaseRepository
 
         $rows = $this->getQuery()
             ->from(self::AUTH_ITEM_TABLE)
-            ->where(['type' => RoleTypeEnum::ROLE->value])
+//            ->where(['type' => RoleTypeEnum::ROLE->value])
             ->all();
 
         return array_map(

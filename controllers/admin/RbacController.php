@@ -42,6 +42,13 @@ class RbacController extends BaseController
         return $this->render('role/create', ['form' => $form]);
     }
 
+    public function actionPermissionCreate()
+    {
+        $form = new AuthItemCreateForm();
+        $form->type = RoleTypeEnum::PERMISSION->value;
+        return $this->render('permission/create', ['form' => $form]);
+    }
+
     public function actionRoleStore()
     {
         try {
@@ -53,8 +60,9 @@ class RbacController extends BaseController
                     RoleTypeEnum::from($form->type)
                 );
                 $this->storeAuthItemService->execute($dto);
-                Yii::$app->session->setFlash('success', "Роль {$dto->name} добавлена");
-                return $this->redirect('/lk/rbac/role/create');
+                $typeLabel = RoleTypeEnum::from($form->type)->label();
+                Yii::$app->session->setFlash('success', "{$typeLabel} {$dto->name} добавлена");
+                return $this->redirect('/lk/rbac');
 
             }
             echo "<pre>";

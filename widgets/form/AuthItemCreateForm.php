@@ -7,7 +7,7 @@ use yii\base\Model;
 class AuthItemCreateForm extends Model
 {
     public string $name = '';
-    public $type;
+    public int $type = 1;
     public string $description = '';
 
 
