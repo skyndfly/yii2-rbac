@@ -5,14 +5,14 @@ namespace app\repositories;
 use app\dto\AuthItemDto;
 use app\enums\RoleTypeEnum;
 
-class RbacRepository extends BaseRepository
+class AuthItemRepository extends BaseRepository
 {
     public const AUTH_ITEM_TABLE = 'auth_item';
 
     /**
      * @return AuthItemDto[]
      */
-    public function getAllRole():array
+    public function getAllRole(): array
     {
 
         $rows = $this->getQuery()
@@ -21,19 +21,29 @@ class RbacRepository extends BaseRepository
             ->all();
 
         return array_map(
-            fn($item) => $this->mapToAuthItemDto($item),
+            fn($item) => $this->mapToDto($item),
             $rows
         );
 
     }
 
-    private function mapToAuthItemDto(array $data): AuthItemDto
+    public function store(AuthItemDto $dto): void
+    {
+        $this->getCommand()->insert(self::AUTH_ITEM_TABLE, [
+            'name' => $dto->name,
+            'type' => $dto->type,
+            'description' => $dto->description,
+        ])
+            ->execute();
+    }
+
+    private function mapToDto(array $data): AuthItemDto
     {
 
         return new AuthItemDto(
             $data['name'],
             $data['description'],
-           RoleTypeEnum::from($data['type']),
+            RoleTypeEnum::from($data['type']),
         );
 
     }

@@ -59,6 +59,7 @@ $config = [
                 'GET lk/users' => 'admin/users/index',
                 'GET lk/rbac' => 'admin/rbac/index',
                 'GET lk/rbac/role/create' => 'admin/rbac/role-create',
+                'POST lk/rbac/role/store' => 'admin/rbac/role-store',
                 'GET site/register' => 'site/register',
                 'POST site/signup' => 'site/signup',
                 'POST site/authorize' => 'site/authorize',
