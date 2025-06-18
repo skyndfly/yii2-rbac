@@ -16,7 +16,6 @@ abstract class BaseController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['index'],
                         'allow' => true,
                         'roles' => ['canAdmin'],
                     ]
