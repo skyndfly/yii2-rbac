@@ -8,6 +8,7 @@ use app\enums\RoleTypeEnum;
 use app\services\rbac\PaginateRoleService;
 use app\services\rbac\StoreAuthItemService;
 use app\widgets\form\AuthItemCreateForm;
+use DomainException;
 use Exception;
 use Yii;
 
@@ -65,10 +66,7 @@ class RbacController extends BaseController
                 return $this->redirect('/lk/rbac');
 
             }
-            echo "<pre>";
-            print_r(11);
-            echo "</pre>";
-            die;
+            throw new DomainException('Произошла непредвиденная ошибка.');
 
         } catch (Exception $exception) {
             Yii::$app->session->setFlash('error', $exception->getMessage());

@@ -14,10 +14,9 @@ class AuthItemRepository extends BaseRepository
      */
     public function getAllRole(): array
     {
-
         $rows = $this->getQuery()
             ->from(self::AUTH_ITEM_TABLE)
-//            ->where(['type' => RoleTypeEnum::ROLE->value])
+            //            ->where(['type' => RoleTypeEnum::ROLE->value])
             ->all();
 
         return array_map(
@@ -37,6 +36,15 @@ class AuthItemRepository extends BaseRepository
             ->execute();
     }
 
+    public function countRelated(string $name): int
+    {
+        return $this->getQuery()
+            ->from('auth_item ai')
+            ->where(['name' => $name])
+            ->innerJoin('auth_assignment aa', 'aa.item_name = ai.name')
+            ->count();
+    }
+
     private function mapToDto(array $data): AuthItemDto
     {
 
@@ -45,6 +53,5 @@ class AuthItemRepository extends BaseRepository
             $data['description'],
             RoleTypeEnum::from($data['type']),
         );
-
     }
 }

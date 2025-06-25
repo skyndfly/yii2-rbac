@@ -10,6 +10,7 @@ class AuthItemDto
         public string $name,
         public string $description,
         public RoleTypeEnum $type,
+        public int $countRelated = 0,
     ) {
     }
 }

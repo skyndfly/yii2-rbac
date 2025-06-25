@@ -1,10 +1,10 @@
 <?php
 
 use app\dto\AuthItemDto;
-use app\enums\RoleTypeEnum;
 use yii\data\ArrayDataProvider;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+use yii\helpers\Html;
 
 /** @var ArrayDataProvider $dataProvider */
 ?>
@@ -31,6 +31,20 @@ use yii\grid\GridView;
                 'value' => function (AuthItemDto $item) {
                     return $item->type->label();
                 },
+            ],
+            [
+                'attribute' => 'countRelated',
+                'label' => 'Кол-во отношений',
+                'format' => 'raw',
+                'value' => function (AuthItemDto $item) {
+                    if ($item->countRelated > 0){
+                        return Html::a(
+                            $item->countRelated,
+                            ['/lk/rbac/role/relations', 'name' => $item->name],
+                        );
+                    }
+                    return $item->countRelated;
+                }
             ],
             [
                 'class' => ActionColumn::class,
