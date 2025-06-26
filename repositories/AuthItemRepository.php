@@ -4,6 +4,7 @@ namespace app\repositories;
 
 use app\dto\AuthItemDto;
 use app\enums\RoleTypeEnum;
+use Yii;
 
 class AuthItemRepository extends BaseRepository
 {
@@ -28,12 +29,14 @@ class AuthItemRepository extends BaseRepository
 
     public function store(AuthItemDto $dto): void
     {
-        $this->getCommand()->insert(self::AUTH_ITEM_TABLE, [
-            'name' => $dto->name,
-            'type' => $dto->type,
-            'description' => $dto->description,
-        ])
-            ->execute();
+        $authManager = Yii::$app->getAuthManager();
+        if ($dto->type === RoleTypeEnum::ROLE) {
+            $role = $authManager->createRole($dto->name);
+        } else {
+            $role = $authManager->createPermission($dto->name);
+        }
+        $role->description = $dto->description;
+        $authManager->add($role);
     }
 
     public function countRelated(string $name): int
