@@ -4,12 +4,11 @@ namespace app\services\rbac;
 
 use app\repositories\AuthItemRepository;
 use yii\data\ArrayDataProvider;
-use yii\db\Query;
 
 class PaginateRoleService
 {
     private AuthItemRepository $repository;
-    private const int PAGINATE = 10;
+    private const int PAGINATE = 50;
 
     public function __construct(AuthItemRepository $repository)
     {

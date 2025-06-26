@@ -69,15 +69,15 @@ class UserRepository extends BaseRepository
     }
     private function mapToDto(array $user): UserDto
     {
-        $dto = new UserDto();
-        $dto->id = $user["id"];
-        $dto->username = $user["username"];
-        $dto->passwordHash = $user["password_hash"];
-        $dto->status = $user["status"];
-        $dto->authKey = $user["auth_key"];
-        $dto->accessToken = $user["access_token"];
-        $dto->createdAt = $user["created_at"];
-        return $dto;
+        return new UserDto(
+            id: $user["id"],
+            username: $user["username"],
+            status: $user["status"],
+            createdAt: $user["created_at"],
+            passwordHash: $user["password_hash"],
+            accessToken: $user["access_token"],
+            authKey: $user["auth_key"],
+        );
     }
 
 }

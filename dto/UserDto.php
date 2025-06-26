@@ -4,11 +4,14 @@ namespace app\dto;
 
 class UserDto
 {
-    public int $id;
-    public string $username;
-    public string $passwordHash;
-    public string $status;
-    public ?string $authKey;
-    public ?string $accessToken;
-    public string $createdAt;
+    public function __construct(
+        public int $id,
+        public string $username,
+        public string $status,
+        public ?string $createdAt = null,
+        public ?string $passwordHash = null,
+        public ?string $accessToken = null,
+        public ?string $authKey = null,
+    ) {
+    }
 }

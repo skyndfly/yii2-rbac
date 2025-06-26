@@ -7,6 +7,7 @@ use app\dto\AuthItemDto;
 use app\enums\RoleTypeEnum;
 use app\services\rbac\PaginateRoleService;
 use app\services\rbac\StoreAuthItemService;
+use app\services\rbac\ViewRoleService;
 use app\widgets\form\AuthItemCreateForm;
 use DomainException;
 use Exception;
@@ -16,17 +17,20 @@ class RbacController extends BaseController
 {
     private PaginateRoleService $paginateRoleService;
     private StoreAuthItemService $storeAuthItemService;
+    private ViewRoleService $viewRoleService;
 
     public function __construct(
         $id,
         $module,
         PaginateRoleService $paginateRoleService,
         StoreAuthItemService $storeAuthItemService,
+        ViewRoleService  $viewRoleService,
         $config = []
     ) {
         parent::__construct($id, $module, $config);
         $this->paginateRoleService = $paginateRoleService;
         $this->storeAuthItemService = $storeAuthItemService;
+        $this->viewRoleService = $viewRoleService;
     }
 
 
@@ -72,5 +76,15 @@ class RbacController extends BaseController
             Yii::$app->session->setFlash('error', $exception->getMessage());
             return $this->redirect('/lk/rbac/role/create');
         }
+    }
+
+    public function actionRoleView(string $role)
+    {
+        $items = $this->viewRoleService->execute($role);
+        return $this->render('role/view', [
+            'role' => $role,
+            'dataProvider' => $items,
+        ]);
+
     }
 }

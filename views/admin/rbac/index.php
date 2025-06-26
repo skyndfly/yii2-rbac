@@ -1,6 +1,8 @@
 <?php
 
 use app\dto\AuthItemDto;
+use app\enums\RoleTypeEnum;
+use rmrevin\yii\fontawesome\FAS;
 use yii\data\ArrayDataProvider;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
@@ -37,18 +39,28 @@ use yii\helpers\Html;
                 'label' => 'Кол-во отношений',
                 'format' => 'raw',
                 'value' => function (AuthItemDto $item) {
-                    if ($item->countRelated > 0){
-                        return Html::a(
-                            $item->countRelated,
-                            ['/lk/rbac/role/relations', 'name' => $item->name],
-                        );
+                    if ($item->type === RoleTypeEnum::ROLE){
+                        if ($item->countRelated > 0) {
+                            return Html::a(
+                                $item->countRelated,
+                                ["/lk/rbac/role/view/{$item->name}"]
+                            );
+                        }
+                        return $item->countRelated;
                     }
-                    return $item->countRelated;
                 }
             ],
             [
                 'class' => ActionColumn::class,
                 'template' => '{view} {update} {delete}',
+                'buttons' => [
+                    'view' => function ($url, $model) {
+                        return Html::a(
+                            FAS::icon('eye'),
+                            ["/lk/rbac/role/view/{$model->name}"]
+                        );
+                    }
+                ]
             ]
         ]
     ]) ?>
