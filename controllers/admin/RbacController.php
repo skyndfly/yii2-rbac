@@ -72,8 +72,8 @@ class RbacController extends BaseController
             }
             throw new DomainException('Произошла непредвиденная ошибка.');
 
-        } catch (Exception $exception) {
-            Yii::$app->session->setFlash('error', $exception->getMessage());
+        } catch (Exception $e) {
+            Yii::$app->session->setFlash('error', $e->getMessage());
             return $this->redirect('/lk/rbac/role/create');
         }
     }

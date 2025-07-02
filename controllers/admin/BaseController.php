@@ -2,6 +2,8 @@
 
 namespace app\controllers\admin;
 
+use app\auth\UserIdentity;
+use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 
@@ -22,5 +24,10 @@ abstract class BaseController extends Controller
                 ]
             ]
         ];
+    }
+
+    protected function getUserIdentity(): ?UserIdentity
+    {
+        return Yii::$app->user->identity;
     }
 }
