@@ -9,6 +9,7 @@ use app\services\rbac\PaginateRoleService;
 use app\services\rbac\StoreAuthItemService;
 use app\services\rbac\ViewRoleService;
 use app\widgets\form\AuthItemCreateForm;
+use app\widgets\form\BindPermissionToRoleForm;
 use DomainException;
 use Exception;
 use Yii;
@@ -24,7 +25,7 @@ class RbacController extends BaseController
         $module,
         PaginateRoleService $paginateRoleService,
         StoreAuthItemService $storeAuthItemService,
-        ViewRoleService  $viewRoleService,
+        ViewRoleService $viewRoleService,
         $config = []
     ) {
         parent::__construct($id, $module, $config);
@@ -84,7 +85,29 @@ class RbacController extends BaseController
         return $this->render('role/view', [
             'role' => $role,
             'dataProvider' => $items,
+            'permissions' => Yii::$app->getAuthManager()->getPermissionsByRole($role),
         ]);
+
+    }
+
+    public function actionBindPermissionToRole(string $role)
+    {
+        $form = new BindPermissionToRoleForm();
+        $form->role = $role;
+
+        return $this->render('role/bind-permission', [
+            'role' => $role,
+            'formModel' => $form,
+        ]);
+
+    }
+
+    public function actionStorePermissionToRole()
+    {
+        echo "<pre>";
+        print_r(Yii::$app->request->post());
+        echo "</pre>";
+        die;
 
     }
 }

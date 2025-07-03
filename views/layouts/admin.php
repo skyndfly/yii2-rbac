@@ -4,7 +4,7 @@
 
 /** @var string $content */
 
-use app\assets\AppAsset;
+use app\assets\AdminAsset;
 use app\widgets\Alert;
 use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
@@ -13,7 +13,7 @@ use yii\bootstrap5\NavBar;
 
 $this->title = 'Панель администратора';
 
-AppAsset::register($this);
+AdminAsset::register($this);
 
 $this->registerCsrfMetaTags();
 $this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
@@ -28,6 +28,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <head>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+    <!--    --><?php //= Html::cssFile('@web/css/admin.css') ?>
 </head>
 <body class="d-flex flex-column h-100">
 <?php $this->beginBody() ?>
@@ -61,12 +62,14 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 
 <main id="main" class="flex-shrink-0" role="main">
     <div class="container">
-
         <div class="row">
             <div class="col-4">
                 <menu class="p-0 d-flex flex-column">
                     <a class="py-2 px-2" href="/lk/users">Список пользователей</a>
                     <a class="py-2 px-2" href="/lk/rbac">Управление ролями и разрешениями</a>
+                    <?php if (Yii::$app->user->can('canBlog')): ?>
+                        <a class="py-2 px-2" href="/lk/articles">Блог</a>
+                    <?php endif; ?>
                 </menu>
             </div>
             <div class="col-8">

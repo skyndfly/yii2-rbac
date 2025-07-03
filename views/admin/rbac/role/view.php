@@ -18,6 +18,8 @@ $this->params['breadcrumbs'] = [
     <h2>Просмотр <?= $role ?></h2>
 
     <a href="" class="btn btn-outline-success mb-3 mb-3">Редактировать</a>
+    <a href="/lk/rbac/role/<?= $role ?>/bind-permission" class="btn btn-outline-success mb-3 mb-3">Привязать
+        разрешение</a>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
