@@ -7,7 +7,11 @@ use yii\grid\GridView;
 /** @var string $role */
 /** @var ArrayDataProvider $dataProvider */
 
-
+$this->title = $role;
+$this->params['breadcrumbs'] = [
+    ['label' => 'Роли и разрешения', 'url' => '/lk/rbac'],
+    $this->title
+];
 ?>
 
 <section>

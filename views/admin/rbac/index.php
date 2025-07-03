@@ -9,6 +9,8 @@ use yii\grid\GridView;
 use yii\helpers\Html;
 
 /** @var ArrayDataProvider $dataProvider */
+$this->title = "Роли и разрешения";
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <section>
     <h1>Список ролей</h1>

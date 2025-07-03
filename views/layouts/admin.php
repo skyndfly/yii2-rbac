@@ -1,6 +1,7 @@
 <?php
 
 /** @var yii\web\View $this */
+
 /** @var string $content */
 
 use app\assets\AppAsset;
@@ -9,6 +10,8 @@ use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
+
+$this->title = 'Панель администратора';
 
 AppAsset::register($this);
 
@@ -58,21 +61,29 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 
 <main id="main" class="flex-shrink-0" role="main">
     <div class="container">
-        <?php if (!empty($this->params['breadcrumbs'])): ?>
-            <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>
-        <?php endif ?>
-       <div class="row">
-           <div class="col-4">
-               <menu class="p-0 d-flex flex-column">
-                   <a class="py-2 px-2" href="/lk/users">Список пользователей</a>
-                   <a class="py-2 px-2" href="/lk/rbac">Управление ролями и разрешениями</a>
-               </menu>
-           </div>
-           <div class="col-8">
-               <?= Alert::widget() ?>
-               <?= $content ?>
-           </div>
-       </div>
+
+        <div class="row">
+            <div class="col-4">
+                <menu class="p-0 d-flex flex-column">
+                    <a class="py-2 px-2" href="/lk/users">Список пользователей</a>
+                    <a class="py-2 px-2" href="/lk/rbac">Управление ролями и разрешениями</a>
+                </menu>
+            </div>
+            <div class="col-8">
+                <?php if (!empty($this->params['breadcrumbs'])): ?>
+                    <?= Breadcrumbs::widget(
+                        [
+                            'links' => $this->params['breadcrumbs'],
+                            'homeLink' => [
+                                'label' => 'Панель администратора',  // Текст ссылки "Главная"
+                                'url' => '/lk'
+                            ],
+                        ]) ?>
+                <?php endif ?>
+                <?= Alert::widget() ?>
+                <?= $content ?>
+            </div>
+        </div>
     </div>
 </main>
 

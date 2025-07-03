@@ -1,7 +1,10 @@
 <?php
 /** @var \app\dto\PaginateUserDto[] $users */
 
-
+$this->title = 'Пользователи';
+$this->params['breadcrumbs'] = [
+    $this->title
+];
 ?>
 
 <section>

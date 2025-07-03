@@ -5,6 +5,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var UserCreateForm $formModel */
+$this->title = 'Создать';
+$this->params['breadcrumbs'] = [
+    ['label' => 'Пользователи', 'url' => '/lk/users'],
+    $this->title
+];
 ?>
 
 <section>
