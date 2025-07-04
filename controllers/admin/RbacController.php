@@ -5,6 +5,7 @@ namespace app\controllers\admin;
 
 use app\dto\AuthItemDto;
 use app\enums\RoleTypeEnum;
+use app\services\rbac\BindPermissionToRoleService;
 use app\services\rbac\PaginateRoleService;
 use app\services\rbac\StoreAuthItemService;
 use app\services\rbac\ViewRoleService;
@@ -19,6 +20,7 @@ class RbacController extends BaseController
     private PaginateRoleService $paginateRoleService;
     private StoreAuthItemService $storeAuthItemService;
     private ViewRoleService $viewRoleService;
+    private BindPermissionToRoleService $bindPermissionToRoleService;
 
     public function __construct(
         $id,
@@ -26,12 +28,14 @@ class RbacController extends BaseController
         PaginateRoleService $paginateRoleService,
         StoreAuthItemService $storeAuthItemService,
         ViewRoleService $viewRoleService,
+        BindPermissionToRoleService $bindPermissionToRoleService,
         $config = []
     ) {
         parent::__construct($id, $module, $config);
         $this->paginateRoleService = $paginateRoleService;
         $this->storeAuthItemService = $storeAuthItemService;
         $this->viewRoleService = $viewRoleService;
+        $this->bindPermissionToRoleService = $bindPermissionToRoleService;
     }
 
 
@@ -92,8 +96,7 @@ class RbacController extends BaseController
 
     public function actionBindPermissionToRole(string $role)
     {
-        $form = new BindPermissionToRoleForm();
-        $form->role = $role;
+        $form = new BindPermissionToRoleForm(['role' => $role]);
 
         return $this->render('role/bind-permission', [
             'role' => $role,
@@ -104,10 +107,21 @@ class RbacController extends BaseController
 
     public function actionStorePermissionToRole()
     {
-        echo "<pre>";
-        print_r(Yii::$app->request->post());
-        echo "</pre>";
-        die;
+        $post = Yii::$app->request->post();
+        try {
+            if (empty($post['BindPermissionToRoleForm']['permissions'])) {
+                $post['BindPermissionToRoleForm']['permissions'] = [];
+            }
+            $form = new BindPermissionToRoleForm();
+            if ($form->load($post) && $form->validate()) {
+                $this->bindPermissionToRoleService->execute($form->role, $form->permissions);
+                Yii::$app->session->setFlash('success', 'Успешно');
+                $this->redirect("/lk/rbac/role/view/{$form->role}");
+            }
+        } catch (Exception $e) {
+            Yii::$app->session->setFlash('error', $e->getMessage());
+            $this->redirect("/lk/rbac/role/{$post['BindPermissionToRoleForm']['role']}/bind-permission");
+        }
 
     }
 }

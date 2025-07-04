@@ -55,10 +55,8 @@ class RbacController extends Controller
 
         $permission = $auth->getPermission('canAdmin');
         $admin = $auth->getRole('admin');
-        $contentManager = $auth->getRole('contentManager');
 
         $auth->addChild($admin, $permission);
-        $auth->addChild($contentManager, $permission);
 
         $this->stdout('Done!' . PHP_EOL);
     }

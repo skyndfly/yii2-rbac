@@ -11,10 +11,21 @@ class BindPermissionToRoleForm extends Model
     public string $role = '';
     public array $permissions = [];
 
+    public function __construct(array $config = [])
+    {
+        parent::__construct($config);
+
+        if (!empty($this->role)) {
+            $auth = Yii::$app->authManager;
+            $permissions = $auth->getPermissionsByRole($this->role);
+            $this->permissions = array_keys($permissions);
+        }
+    }
+
     public function rules(): array
     {
         return [
-            [['role', 'permissions'], 'required'],
+            [['role'], 'required'],
             ['role', 'string'],
             ['permissions', 'each', 'rule' => [
                 'in',
@@ -30,6 +41,7 @@ class BindPermissionToRoleForm extends Model
             'permissions' => 'Разрешения'
         ];
     }
+
     public function availablePermissions(): array
     {
         /** @var AuthItemDto[] $permissions */
